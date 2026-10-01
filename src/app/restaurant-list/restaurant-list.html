@@ -1,0 +1,31 @@
+<ul>
+  @for (restaurant of restaurants(); track restaurant.id) {
+    <li>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Description</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Status</th>
+            <th scope="col">Address</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>{{ restaurant.name }}</td>
+            <td>{{ restaurant.photo }}</td>
+            <td>{{ restaurant.description }}</td>
+            <td>{{ restaurant.rate }}</td>
+            <td>{{ restaurant.status }}</td>
+            <td>{{ restaurant.address }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </li>
+  } @empty {
+    <li>Рестораны не найдены</li>
+  }
+</ul>

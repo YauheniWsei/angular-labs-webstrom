@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 type PhotoType = 'image';
 
 interface Restaurant {
@@ -12,7 +13,8 @@ interface Restaurant {
 }
 
 @Component({
-  imports: [],
+  // NgOptimizedImage нужен для атрибута ngSrc у картинки
+  imports: [NgOptimizedImage],
   selector: 'app-restaurant-list',
   styleUrl: './restaurant-list.scss',
   templateUrl: './restaurant-list.html',

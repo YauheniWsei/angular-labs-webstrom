@@ -1,14 +1,62 @@
+<section class="controls" aria-label="Wyszukiwanie i filtry">
+  <div class="control-group">
+    <label for="rest-search">Szukaj</label>
+    <input
+      id="rest-search"
+      type="search"
+      placeholder="Nazwa lub opis…"
+      #search
+      [value]="searchText()"
+      (input)="searchText.set(search.value)"
+    />
+  </div>
+
+  <div class="control-group" role="group" aria-labelledby="cuisine-title">
+    <span id="cuisine-title">Kuchnia</span>
+    <button type="button" class="chip" [attr.aria-pressed]="cuisine() === 'all'" (click)="cuisine.set('all')">
+      Wszystkie
+    </button>
+    @for (option of cuisineOptions; track option.value) {
+      <button
+        type="button"
+        class="chip"
+        [attr.aria-pressed]="cuisine() === option.value"
+        (click)="cuisine.set(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    }
+  </div>
+
+  <div class="control-group" role="group" aria-labelledby="sort-title">
+    <span id="sort-title">Sortuj</span>
+    @for (option of sortOptions; track option.value) {
+      <button
+        type="button"
+        class="chip"
+        [attr.aria-pressed]="sortBy() === option.value"
+        (click)="toggleSort(option.value)"
+      >
+        {{ option.label }}
+      </button>
+    }
+  </div>
+
+  <div class="control-group">
+    <label>
+      <input type="checkbox" #active [checked]="onlyActive()" (change)="onlyActive.set(active.checked)" />
+      Tylko otwarte
+    </label>
+    <button type="button" (click)="resetFilters()">Wyczyść filtry</button>
+  </div>
+</section>
+
+<p class="results-count" aria-live="polite">Znaleziono: {{ visibleRestaurants().length }}</p>
+
 <ul class="rest-list">
-  @for (restaurant of restaurants(); track restaurant.id) {
+  @for (restaurant of visibleRestaurants(); track restaurant.id) {
     <li>
-      <div class="rest">
-        <div class="rest-name">{{ restaurant.name }}</div>
-        <div class="rest-descr">{{ restaurant.description }}</div>
-        <div class="rest-address">{{ restaurant.address }}</div>
-        <div class="rest-rate">{{ restaurant.rate }}</div>
-        <div class="rest-status">{{ restaurant.status }}</div>
-        <img class="rest-photo" ngSrc="/rest.png" width="1302" height="709" alt="Фото ресторана {{ restaurant.name }}" />
-      </div>
+      <app-restaurant-card [restaurant]="restaurant" (restaurantUpdated)="updateRestaurant($event)" />
     </li>
   } @empty {
     <li>Рестораны не найдены</li>
